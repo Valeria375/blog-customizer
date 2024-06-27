@@ -55,6 +55,11 @@ export const ArticleParamsForm = ({
 		  [optionType]: selected,
 		}));
 	  };
+	  useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef,
+		onChange: toggleForm,
+	  });
 
 	return (
 		<div ref={rootRef}>
