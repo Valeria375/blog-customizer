@@ -6,16 +6,28 @@ import { useRef, useState } from 'react';
 import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 import { Text } from '../text';
 import { Select } from '../select';
+import { RadioGroup } from '../radio-group';
+import { Separator } from '../separator';
 import clsx from 'clsx';
-import { ArticleStateType, fontFamilyOptions } from 'src/constants/articleProps';
-
+import {
+	ArticleStateType,
+	OptionType,
+	backgroundColors,
+	contentWidthArr,
+	fontColors,
+	fontFamilyOptions,
+	fontSizeOptions,
+} from 'src/constants/articleProps';
 
 type ArticleParamsFormProps = {
 	currentSettings: ArticleStateType;
 	applySettings?: (newState: ArticleStateType) => void;
-  }; 
+};
 
-export const ArticleParamsForm = (props:ArticleParamsFormProps) => {
+export const ArticleParamsForm = ({
+	currentSettings,
+	applySettings,
+}: ArticleParamsFormProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 	const rootRef = useRef<HTMLDivElement>(null);
 	const toggleForm = () => {
@@ -23,11 +35,12 @@ export const ArticleParamsForm = (props:ArticleParamsFormProps) => {
 		setIsMenuOpen(!isMenuOpen);
 		// alert(isMenuOpen)
 	};
-	// const [formState, setFormState] = useState<ArticleStateType>();
-	// const handleSubmit = (event: React.FormEvent) => {
-	// 	event.preventDefault();
-	// 	props.applySettings(formState);
-	//   };
+	const [formState, setFormState] = useState<ArticleStateType>(currentSettings);
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		// applySettings(formState);
+	};
 	return (
 		<div ref={rootRef}>
 			<ArrowButton onClick={toggleForm} isOpen={isMenuOpen} />
@@ -38,7 +51,29 @@ export const ArticleParamsForm = (props:ArticleParamsFormProps) => {
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}
-						selected={null}
+						selected={formState.fontFamilyOption}
+					/>
+					<RadioGroup
+						name='Размер шрифта'
+						options={fontSizeOptions}
+						selected={formState.fontSizeOption}
+						title='Размер шрифта'
+					/>
+					<Select
+						title='Цвет шрифта'
+						options={fontColors}
+						selected={formState.fontColor}
+					/>
+					  <Separator />
+					<Select
+						title='Цвет фона'
+						options={backgroundColors}
+						selected={formState.backgroundColor}
+					/>
+					<Select
+						title='Ширина контента'
+						options={contentWidthArr}
+						selected={formState.contentWidth}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' />
