@@ -22,12 +22,12 @@ import {
 } from 'src/constants/articleProps';
 
 type ArticleParamsFormProps = {
-	currentSettings: ArticleStateType;
+	settingsState: ArticleStateType;
 	applySettings: (newState: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = ({
-	currentSettings,
+	settingsState,
 	applySettings,
 }: ArticleParamsFormProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,7 +37,7 @@ export const ArticleParamsForm = ({
 		setIsMenuOpen(!isMenuOpen);
 		// alert(isMenuOpen)
 	};
-	const [formState, setFormState] = useState<ArticleStateType>(currentSettings);
+	const [formState, setFormState] = useState<ArticleStateType>(settingsState);
 
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -62,7 +62,9 @@ export const ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
 				<form className={styles.form} onSubmit={handleSubmit}>
-					<Text>Задайте параметры</Text>
+					<Text
+					size={31}
+					weight={800}>Задайте параметры</Text>
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}

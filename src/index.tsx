@@ -19,7 +19,7 @@ const App = () => {
 	const [articleState, setArticleState] =
 		useState<ArticleStateType>(defaultArticleState);
 
-	const updateArticleState = (newState: ArticleStateType) => {
+	const updateState = (newState: ArticleStateType) => {
 		setArticleState(newState);
 	};
 	return (
@@ -35,8 +35,8 @@ const App = () => {
 				} as CSSProperties
 			}>
 			<ArticleParamsForm
-				currentSettings={defaultArticleState}
-				applySettings={updateArticleState}
+				settingsState={defaultArticleState}
+				applySettings={updateState}
 			/>
 			<Article />
 		</div>
