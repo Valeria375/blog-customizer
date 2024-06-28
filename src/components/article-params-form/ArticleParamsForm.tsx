@@ -20,6 +20,7 @@ import {
 	fontFamilyOptions,
 	fontSizeOptions,
 } from 'src/constants/articleProps';
+import { useClose } from '../select/hooks/useClose';
 
 type ArticleParamsFormProps = {
 	settingsState: ArticleStateType;
@@ -48,18 +49,26 @@ export const ArticleParamsForm = ({
 	const handleReset = () => {
 		setFormState(defaultArticleState);
 		applySettings(defaultArticleState);
-	  };
-	  const handleOptionChange = (optionType: keyof ArticleStateType) => (selected: OptionType) => {
-		setFormState((prevState) => ({
-		  ...prevState,
-		  [optionType]: selected,
-		}));
-	  };
-	  useOutsideClickClose({
+	};
+	const handleOptionChange =
+		(optionType: keyof ArticleStateType) => (selected: OptionType) => {
+			setFormState((prevState) => ({
+				...prevState,
+				[optionType]: selected,
+			}));
+		};
+	useOutsideClickClose({
 		isOpen: isMenuOpen,
 		rootRef,
 		onChange: toggleForm,
-	  });
+	});
+	const formRef = useRef<HTMLElement>(null);
+	useClose({
+		isOpen: isMenuOpen,
+		onClose: toggleForm,
+		rootRef: formRef
+	})
+	
 
 	return (
 		<div ref={rootRef}>
@@ -67,9 +76,9 @@ export const ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
 				<form className={styles.form} onSubmit={handleSubmit}>
-					<Text
-					size={31}
-					weight={800}>Задайте параметры</Text>
+					<Text size={31} weight={800}>
+						Задайте параметры
+					</Text>
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}
@@ -77,7 +86,7 @@ export const ArticleParamsForm = ({
 						onChange={handleOptionChange('fontFamilyOption')}
 					/>
 					<RadioGroup
-					title='Размер шрифта'
+						title='Размер шрифта'
 						name='Размер шрифта'
 						options={fontSizeOptions}
 						selected={formState.fontSizeOption}
@@ -89,7 +98,7 @@ export const ArticleParamsForm = ({
 						selected={formState.fontColor}
 						onChange={handleOptionChange('fontColor')}
 					/>
-					  <Separator />
+					<Separator />
 					<Select
 						title='Цвет фона'
 						options={backgroundColors}
@@ -103,7 +112,7 @@ export const ArticleParamsForm = ({
 						onChange={handleOptionChange('contentWidth')}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' onClick={handleReset}/>
+						<Button title='Сбросить' type='reset' onClick={handleReset} />
 						<Button title='Применить' type='submit' />
 					</div>
 				</form>
